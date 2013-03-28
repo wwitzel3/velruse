@@ -9,6 +9,7 @@ requires = [
     'requests',
     'requests-oauthlib',
     'anykeystore',
+    'python-social-auth',
 ]
 
 if PY3:

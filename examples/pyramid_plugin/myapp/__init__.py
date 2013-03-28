@@ -6,6 +6,9 @@ from pyramid.session import UnencryptedCookieSessionFactoryConfig
 from pyramid.view import view_config
 
 from velruse import login_url
+from social.backends import (
+    facebook,
+)
 
 log = logging.getLogger(__name__)
 
@@ -62,6 +65,11 @@ def main(global_config, **settings):
     config = Configurator(settings=settings)
     config.set_session_factory(session_factory)
     config.add_static_view('static', 'static', cache_max_age=3600)
+
+    if 'psa' in providers:
+        config.include('velruse.providers.psa')
+        config.register_psa_provider_class(facebook.FacebookOAuth2)
+        config.add_psa_config_from_settings(key='psa.providers')
 
     if 'facebook' in providers:
         config.include('velruse.providers.facebook')
